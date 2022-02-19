@@ -1,0 +1,64 @@
+{% extends 'shared/_MainLayout.html' %}
+{% load static %}
+
+{% block title %}دسته بندی  ها {% endblock %}
+{% block content %}
+
+<div class="container p-0">
+        <div class="row">
+            <div class="col-12">
+               <div class="breadcrumb-wrap p-3 bg-white my-4 rounded">
+                  <nav>
+                     <ol class="d-flex">
+                        <li><a href="/">خانه</a></li>
+                        <li>دسته بندی </li>
+                     </ol>
+                  </nav>
+               </div>
+            </div>
+        </div>
+</div>
+
+<section class="my-1 ">
+         <div class="container bg-white py-3 rounded grided-box px-4 pt-4">
+            <div class="row">
+               <div class="col-12">
+                  <div class="title-box mb-3">
+                     <p class="m-0 p-0">دسته بندی ها </p>
+                        <span class="d-block"><a href="#">تمام دسته بندی ها </a> <i class="bi bi-arrow-left position-relative"></i></span>                    
+                  </div>
+               </div>
+               <div class="col-md-12">
+                  <div class="row">
+                     {% for cat in cat1 %}
+                     <div class="col-md-4 top-slider">
+                        <a href="/category/{{cat.name}}">
+                           <div class="slider-item index-item-p">
+                              <figure class="position-relative">
+                                 <img src="{{cat.image.url}}" alt="" class="w-100">
+                                 <figcaption class="tp_top position-absolute p-4">
+                                  
+                                 </figcaption>
+                                 <figcaption class="tp_bottom w-100 position-absolute p-4">
+                                    <h4 class="overflow-hidden px-2 text-light w-100 p-0 m-0">{{cat.title}}</h4>
+                        </a>
+                        </figcaption>
+                        </figure>
+                        </div></a>
+                     </div>
+                     {% endfor %}
+                     
+                  </div>
+               </div>
+               
+            </div>
+         </div>
+</section>
+
+
+{% endblock %}
+
+
+
+
+

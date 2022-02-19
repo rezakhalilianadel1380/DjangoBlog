@@ -1,0 +1,1 @@
+defuault_app_config='nlg_slider.app.NlgSliderConfig'

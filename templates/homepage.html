@@ -1,0 +1,185 @@
+{% extends 'shared/_MainLayout.html' %}
+{% load static %}
+{% load hitcount_tags %}
+{% block title %}نارنج بلاگ {% endblock  %}
+{% block content %}
+ 
+<section class="my-5">
+         <div class="container">
+            <div class="row">
+               <div class="col-md-8">
+                  <div class="slider-index shadow-sm">
+                     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                        {% for slider in sliders %}
+                           <div class="carousel-item {{ forloop.first|yesno:'active,' }}">
+                              <img src="{{slider.image.url}}" height='350px' class="d-block w-100 rounded" alt="">
+                           </div>
+                        {% endfor %}
+                        </div>
+                     </div>
+                  </div>
+                  <BR>
+                  <div class="row">
+                     <div class="col-12">
+                        <div class="search-box">
+                           <form action="/search" class="position-relative w-100 mb-3 mb-md-0">
+                              <input type="text" placeholder="جستجو کنید ..." value="{{request.GET.q}}" name='q' class="pe-3">
+                              <button class="position-absolute bg-dark"><i class="bi bi-search"></i></button>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-4 top-slider">
+                  <aside>
+                     <div class="sidebar-wrap">
+                        <div class="side-box-cats bg-white rounded p-3 mb-3">
+                           <span class="d-block my-3 border-right title position-relative"><i class="bi bi-chat-right-text"></i> مطالب اخیر</span>
+                           <ul class="list-group list-group-flush">
+                              {% for article in articles %}
+                               <li class="list-group-item"><a href="/article/{{article.id}}">{{article.title}}</a></li>
+                            
+                              {% endfor %}
+                           </ul>
+                        </div>
+                     </div>
+                  </aside>
+               </div>
+            </div>
+         </div>
+</section>
+<section class="my-3">
+         <div class="container">
+            <div class="row">
+               <div class="col-12">
+                  <div class="title-box mb-3">
+                     <p class="m-0 p-0">پربازدیدترین  مطالب</p>
+                    
+                  </div>
+               </div>
+               <div class="col-12">
+                  <div class="top-slider owl-carousel owl-theme top-slider-wrap">
+                     
+                     {% for item  in visit  %}
+                        <div class="slider-item bg-white rounded p-4">
+                                 <figure class="position-relative">
+                                    <img src="{{item.image.url}}" alt="" class="w-100 rounded">
+                                    <figcaption class="tp_top position-absolute p-4">
+                                       <span>{% get_hit_count for item %} <i class="fas fa-eye"></i></span>
+                                    </figcaption>
+                                    <figcaption class="tp_bottom position-absolute p-4">
+                                       <i class="bi bi-play bg-white d-inline-block text-center"></i>
+                                    </figcaption>
+                                 </figure>
+                                 <div class="item-cat">
+                                    <div class="d-flex">
+                                       <i class="bi bi-play-circle"></i>
+                                       <span class="d-block p-2 text-info">پربازدیدترین</span>
+                                    </div>
+                                 </div>
+                                 <a href="/article/{{item.id}}">
+                                    <h6 class="overflow-hidden px-2">{{item.title|truncatechars:30}}</h6>
+                                 </a>
+                           </div>
+                     
+                     {% endfor %}   
+                  </div>
+               </div>
+            </div>
+         </div>
+</section>
+<br>
+<section>
+         <div class="container">
+            <div class="row justify-content-center">
+               <div class="col-12">
+                  <div class="title-box mb-3">
+                     <p class="m-0 p-0">آخرین مطالب سایت</p>
+                     <span class="d-block"><a href="/articles">مشاهده همه</a> <i class="bi bi-arrow-left position-relative"></i></span>
+                  </div>
+               </div>
+               {% for article in articles %}
+               <div class="col-sm-6 col-md-6 col-lg-4 my-3">
+                  <div class="blg-wrap bg-white pb-3">
+                     <figure class="position-relative">
+                     <img src="{{article.image.url}}" alt="" class="w-100">
+                     <figcaption class="position-absolute w-100 h-100"><span class="blg-dt">{{article.convert_to_jalali}}</span></figcaption>
+                     </figure class="position-relative">
+                     <div class="px-3 py-1 text-start">
+                        <span class="blg-cat-name d-inline-block bg-info py-1 px-2">مطالب روز</span>
+                     </div>
+                     <a href="/article/{{article.id}}">
+                        <h4 class="blg-title p-3 mx-5 text-dark border-bottom overflow-hidden">{{article.title}}</h4>
+                     </a>
+                     <div class="post-type d-flex p-3 pb-0">
+                        <i class="bi bi-instagram d-inline-block text-info text-center"></i>
+                        {% for i in article.category.all %}
+                        <span>{{i.title}}</span>
+                         {% endfor %}
+                     </div>
+                     <p class="p-4 overflow-hidden">{{article.description|safe|striptags|slice:':200'}}</p>
+                     <span class="p-4 overflow-hidden ">{{article.time|timesince}}</span>
+                  </div>
+               </div>
+               {% endfor %}
+            </div>
+         </div>
+</section>
+<section class="my-5 ">
+         <div class="container bg-white py-3 rounded grided-box px-4 pt-4">
+            <div class="row">
+               <div class="col-12">
+                  <div class="title-box mb-3">
+                     <p class="m-0 p-0">دسته بندی ها </p>
+                     <span class="d-block"><a href="/categories">مشاهده همه</a> <i class="bi bi-arrow-left position-relative"></i></span>
+                  </div>
+               </div>
+               <div class="col-md-6">
+                  <div class="row">
+                     {% for cat in cat1 %}
+                     <div class="col-md-6 top-slider">
+                        <a href="/category/{{cat.name}}">
+                           <div class="slider-item index-item-p">
+                              <figure class="position-relative">
+                                 <img src="{{cat.image.url}}" alt="" class="w-100">
+                                 <figcaption class="tp_top position-absolute p-4">
+                                  
+                                 </figcaption>
+                                 <figcaption class="tp_bottom w-100 position-absolute p-4">
+                                    <h4 class="overflow-hidden px-2 text-light w-100 p-0 m-0">{{cat.title}}</h4>
+                        </a>
+                        </figcaption>
+                        </figure>
+                        </div></a>
+                     </div>
+                     {% endfor %}
+                     
+                  </div>
+               </div>
+               <div class="col-md-6">
+                  <div class="row">
+                     {% for cat in cat2 %}
+                        <div class="col-12 top-slider">
+                        <a href="/category/{{cat.name}}">
+                           <div class="slider-item index-item-p">
+                              <figure class="position-relative">
+                                 <img src="{{cat.image.url}}" alt="" class="w-100">
+                                 <figcaption class="tp_top position-absolute p-4">
+                                 </figcaption>
+                                 <figcaption class="tp_bottom w-100 position-absolute p-4">
+                                    <h4 class="overflow-hidden px-2 text-light w-100 p-0 m-0">{{cat.title}}</h4>
+                        </a>
+                        </figcaption>
+                        </figure>
+                        </div></a>
+                     </div>
+                     {% endfor %}
+                     
+                  </div>
+               </div>
+            </div>
+         </div>
+</section>
+
+{% endblock  %}

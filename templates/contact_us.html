@@ -1,0 +1,50 @@
+{% extends 'shared/_MainLayout.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class='container'>
+<div class="row">
+            <div class="col-12">
+               <div class="breadcrumb-wrap p-3 bg-white my-4 rounded">
+                  <nav>
+                     <ol class="d-flex">
+                        <li><a href="/">خانه</a></li>
+                        <li>تماس با ما </li>
+                     </ol>
+                  </nav>
+               </div>
+            </div>
+</div>
+</div>
+
+<section class="mb-5">
+    <div class="container">
+        <div class="row">
+           <div class='col-12'>
+            <img src="{% static 'img/Map.jpg' %}" alt="">
+           </div>
+               
+               <div class='col-md-8 mt-4'> 
+                  <form class='col-md-12' >
+                    <div class='col-md-6 col-sm-12 col-12 col-lg-6 p-2 float-start'>
+                    <input type="text" placeholder="نام" class='form-control'>
+                    </div>
+                    <div class='col-md-6 col-sm-12 col-12 col-lg-6 p-2 float-end p-2'>
+                    <input type="text" placeholder="ایمیل " class='form-control'>
+                    </div>
+                    <div class='col-md-12  col-sm-12 col-12 col-lg-12 float-end p-2'>
+                    <textarea placeholder="پیام" name="" id="" cols="30" rows="10"></textarea>
+                    </div>
+                     
+                  </form>
+                
+               </div>
+               <div class='col-md-4'> 
+               
+               
+               </div>
+        </div>
+    </div>
+</section>
+{% endblock  %}

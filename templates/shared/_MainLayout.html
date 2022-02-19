@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+   <head>
+      {% include 'shared/header_refrences.html' %}
+      <title>{% block title %}{% endblock  %}</title>
+      <style>{% include 'style.css' %}</style>
+   </head>
+   <body>
+    {% include 'shared/Header.html' %}
+    {% block content %}{% endblock content %}
+    {% include 'shared/Footer.html' %}
+    {% include 'shared/js_refrence.html' %}
+   </body>
+</html>
+
+
+
+
+
+
+
+

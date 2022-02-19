@@ -1,0 +1,168 @@
+{% extends 'shared/_MainLayout.html' %}
+{% load static %}
+{% block title %}{{object.title}}{% endblock  %}
+{% block content %}
+
+<div class="container">
+         <div class="row">
+            <div class="col-12">
+               <div class="breadcrumb-wrap p-3 bg-white my-4 rounded">
+                  <nav>
+                     <ol class="d-flex">
+                        <li><a href="/">خانه</a></li>
+                        <li><a href="/articles">مقالات</a></li>
+                        <li>{{article.title}}</li>
+                     </ol>
+                  </nav>
+               </div>
+            </div>
+         </div>
+</div>
+
+
+<section class="mb-5">
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-9">
+                  <article>
+                     <div class="section-top-single bg-white rounded p-3">
+                        <div class="row">
+                           <div class="col-md-12">
+                              <figure>
+                                 <img src="{{object.image.url}}" alt="عکس" width='100%'  height="500px" class="img-thumbnail d-table mx-auto">
+                              </figure>
+                           </div>
+                          
+                        </div>
+                     </div>
+                     <div class="content-single rounded bg-white p-3 mt-3">
+                       {{object.description|safe}} 
+                     </div>
+                     <div class="rounded bg-white p-3 mt-3">
+                      {% for msg in messages  %}
+                           {% if msg.tag == 'error' %} 
+                           <div class="alert alert-danger" role="alert">
+                              {{msg}}
+                              </div>{% endif %}
+                           {% if msg.tag == 'success' %} 
+                           <div class="alert alert-success" role="alert">
+                              {{msg}}
+                              </div>{% endif %}
+                     
+                        {% endfor %}
+                        <div class="comments-box">
+                        {% if comments.exists %}    
+                           {% for comment in comments %}
+                            <div class="cm-parent rounded bg-light p-3 mb-3">
+                              <div class="row">
+                                 <div class="col-1">
+                                    <img src="{% static 'img/userAvatar.png' %}" alt="">
+                                 </div>
+                                 <div class="col-11">
+                                    <p><span class="d-inline-block text-primary ps-2">{{comment.name}} :</span> {{comment.message}}</p>
+                                    <div class="text-start">
+                                       <span class="d-inline-block mt-2 py-1 text-info px-2">
+                                       <i class="bi bi-calendar2-event"></i> {{comment.convert_to_jalali}}
+                                       </span>
+                                       <button class="css-button css-button-shadow-border-sliding css-button-shadow-border-sliding--sky" onclick="myFunction({{comment.id}})">
+                                         <a href="#form_comment" class='text-white'> پاسخ </a>
+                                       </button>
+                                       
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                            {% if comment.check_reply  %}
+                              {% for reply in comment.check_reply %}
+                              <div class="cm-chlid me-5 border border-dark-50 rounded p-3 mb-3">
+                                 <div class="row">
+                                    <div class="col-1">
+                                       <img src="{% static 'img/userAvatar.png' %}" alt="">
+                                    </div>
+                                    <div class="col-11">
+                                     <p class='text-secondary ' style='font-size:11px;'> پاسخ به  : {{reply.comment.name}} <p>
+                                       <p><span class="d-inline-block text-primary ps-2">{{reply.name}}:</span>{{reply.message}}</p>
+                                       <div class="text-start">
+                                          <span class="d-inline-block mt-2 py-1 text-info px-2">
+                                     
+                                          <i class="bi bi-calendar2-event"></i> {{reply.convert_to_jalali}}
+                                          </span>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              {% endfor %}
+                            {% endif %}
+                           {% endfor %}
+                        {% else %}
+                        <div class="alert alert-warning text-center" role="alert">
+                          اولین نفر باشید که نظر میدهید 
+                        </div>
+                        {% endif %} 
+
+                        </div>
+                        <div class="comment-form-rules mb-3 mt-5">
+                           <div class="row">
+                              <div class="col-md-6">
+                                 <form class="comment-form" method='POST' action="/add-comment" id='form_comment'>
+                                 {% csrf_token %}
+                                  {{comment_form.article_id}}
+                                  {{comment_form.reply_id}}
+                           
+                                    <h6 class=" pb-3 border-bottom mb-3"><i class="bi bi-chat-right-text"></i> در بهبود مقاله شریک باشید</h6>
+                                    <div class="row">
+                                       <div class="col-12 mb-2">
+                                         {{comment_form.email}}
+                                       </div>
+                                       <div class="col-12 mb-2">
+                                         {{comment_form.name}}
+                                         	
+                                       </div>
+                                    </div>
+                                    <div class="col-12">{{comment_form.message}}</div>
+                                    <div class="text-start">
+                                       <button type="submit">ارسال</button>
+                                    </div>
+                                 </form>
+                              </div>
+                              <div class="col-md-6">
+                                 <div class="commemt-rules">
+                                    <h6 class=" pb-3 border-bottom mb-3"><i class="bi bi-chat-right-text"></i> قوانین ارسال دیدگاه</h6>
+                                    <p class="text-danger">از به کار بردن الفاظ رکیک خودداری کنید </p>
+                                    <p class="text-danger">مقصود خود را محترمانه بیان کنید </p>
+                                    <p class="text-danger"> دادن الفاظ رکیک پیگرد قانونی دارد</p>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </article>
+               </div>
+               <div class="col-lg-3 mt-4 mt-lg-0">
+                  <aside>
+                     <div class="sidebar-wrap">
+                        <div class="side-box-cats bg-white rounded p-3 mb-3">
+                           <span class="d-block my-3 border-right title position-relative"><i class="bi bi-archive"></i> دسته بندی</span>
+                           <ul class="list-group list-group-flush">
+                              {% for category in categories %}
+                              <li class="list-group-item"><a href="/category/{{category.name}}"> {{category.title}}</a><span class="counter">{{category.article_set.all|length}}</span></li>
+                              {% endfor %}
+                              
+                           </ul>
+                        </div>
+                        <div class="side-box-cats bg-white rounded p-3 mb-3">
+                           <span class="d-block my-3 border-right title position-relative"><i class="bi bi-chat-right-text"></i> مطالب اخیر</span>
+                           <ul class="list-group list-group-flush">
+                              {% for article in last_articles %}
+                               <li class="list-group-item"><a href="#">{{article.title}}</a></li>
+                            
+                              {% endfor %}
+                           </ul>
+                        </div>
+                     </div>
+                  </aside>
+               </div>
+            </div>
+         </div>
+</section>
+{% endblock  %}

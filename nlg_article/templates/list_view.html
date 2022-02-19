@@ -1,0 +1,85 @@
+{% extends 'shared/_MainLayout.html' %}
+{% load static %}
+{% block title %}مقالات{% endblock %}
+{% block content %}
+<div class="container">
+        <div class="row">
+            <div class="col-12">
+               <div class="breadcrumb-wrap p-3 bg-white my-4 rounded">
+                  <nav>
+                     <ol class="d-flex">
+                        <li><a href="/">خانه</a></li>
+                        <li>مقالات</li>
+                     </ol>
+                  </nav>
+               </div>
+            </div>
+        </div>
+</div>
+
+<section class="mb-5">
+         <div class="container">
+            <div class="row">
+               <div class="col-12">
+                  <div class="title-box mb-2">
+                   
+                     <span class="d-block"><a href="#">همه مطالب وبلاگ</a> <i class="bi bi-arrow-left position-relative"></i></span>
+                  </div>
+               </div>
+               
+               {% for article in page_obj %}
+                   <div class="col-sm-6 col-md-6 col-lg-4 my-3">
+                    <div class="blg-wrap bg-white pb-3">
+                     <figure class="position-relative">
+                     <img src="{{article.image.url}}" alt="" class="w-100">
+                     <figcaption class="position-absolute w-100 h-100"><span class="blg-dt">{{article.convert_to_jalali}}</span></figcaption>
+                     </figure>
+                     <div class="px-3 py-1 text-start">
+                        <span class="blg-cat-name d-inline-block bg-info py-1 px-2">مطالب روز</span>
+                     </div>
+                   
+                        
+                        <a href="/article/{{article.id}}" style='text-decoration: none;' data-toggle="tooltip" title="{{article.title}}">
+                           <h4 class="blg-title p-3 mx-5 text-dark border-bottom overflow-hidden">{{article.title}}</h4></a>
+                        
+                        
+                        
+                     
+                     <div class="post-type d-flex p-3 pb-0">
+                        <i class="bi bi-instagram d-inline-block text-info text-center"></i>
+                        <span>{{article.category.first.title}}</span>
+                     </div>
+                     <p class="p-4 overflow-hidden">{{article.description|safe|striptags|slice:':200'}} </p>
+                  </div>
+               </div>
+               {% endfor %}
+            </div>
+         </div>
+</section>
+<div class="container">
+         <div class="row">
+            <div class="col-12 mb-5">
+               <div class="pagination-wrap">
+                  <ul class="d-flex justify-content-center">
+                    {% if page_obj.has_previous %}
+                     <li> <a href="?page={{ page_obj.previous_page_number }}">قبلی </a></li>
+                    {% endif %}
+                    {% for page in paginator.page_range %}
+					{% if page == page_obj.number%}
+					<li class="active"><a href="?page={{page}}">{{page}}</a></li>
+					{% else %}
+					<li><a href="?page={{page}}">{{page}}</a></li>
+					{% endif %}
+					{% endfor %}
+
+                    {% if page_obj.has_next %}
+					<li><a href="?page={{ page_obj.paginator.num_pages }}">بعدی</a><li>
+					{% endif %}
+                
+                  </ul>
+               </div>
+            </div>
+         </div>
+</div>     
+      
+{% endblock  %}
